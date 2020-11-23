@@ -1,13 +1,19 @@
 import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Onboarding from "./src/Authentication/Onboarding";
+import { LoadAssets } from "./src/compnents";
+
+import { Onboarding } from "./src/Authentication";
+
+const fonts = {
+  "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
+  "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
+  "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
+};
 
 const AuthenticationStack = createStackNavigator();
-
 const AuthenticationNavigation = () => {
   return (
-    <AuthenticationStack.Navigator>
+    <AuthenticationStack.Navigator headerMode="none">
       <AuthenticationStack.Screen name="Onboarding" component={Onboarding} />
     </AuthenticationStack.Navigator>
   );
@@ -15,8 +21,8 @@ const AuthenticationNavigation = () => {
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <LoadAssets {...{ fonts }}>
       <AuthenticationNavigation />
-    </NavigationContainer>
+    </LoadAssets>
   );
 }
