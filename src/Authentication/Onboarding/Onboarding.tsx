@@ -1,12 +1,17 @@
 import React, { useRef } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import { onScrollEvent } from "../../utils/onScrollEvents";
-import Animated, { interpolateColors, multiply } from "react-native-reanimated";
+import Animated, {
+  divide,
+  interpolateColors,
+  multiply,
+} from "react-native-reanimated";
 import { useValue } from "react-native-redash/lib/module/v1";
 import { interpolateColor } from "react-native-redash";
 
 import Slide, { SLIDE_HEIGHT } from "./Slide";
 import Subslide from "./Subslide";
+import Dot from "../../compnents/Dot";
 
 const { width, height } = Dimensions.get("window");
 
@@ -26,9 +31,15 @@ const styles = StyleSheet.create({
   },
   footerContent: {
     flex: 1,
-    flexDirection: "row",
     backgroundColor: "white",
     borderTopLeftRadius: BORDER_RADIUS,
+  },
+  pagination: {
+    ...StyleSheet.absoluteFillObject,
+    height: BORDER_RADIUS,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
@@ -40,7 +51,7 @@ const slides = [
       "Confused about your outfits? Don't worry! Find the best of them",
     color: "#BFEAF5",
     right: false,
-    // picture: require('../../assets/images/1.png'),
+    picture: require('../../assets/images/1.png'),
   },
   {
     title: "Playful",
@@ -49,7 +60,7 @@ const slides = [
       "Hating the clothes in your wardrobe? Explore hundreds of outfits ideas",
     color: "#BEECC4",
     right: true,
-    // picture: require('../../assets/images/2.png'),
+    picture: require('../../assets/images/2.png'),
   },
   {
     title: "Excentric",
@@ -58,7 +69,7 @@ const slides = [
       "Create your individual & unique style and look amazing everyday",
     color: "#FFE4D9",
     right: false,
-    // picture: require('../../assets/images/3.png'),
+    picture: require('../../assets/images/3.png'),
   },
   {
     title: "Funky",
@@ -67,7 +78,7 @@ const slides = [
       "Discover the latest trends in fashion and explore your personality",
     color: "#FFDDDD",
     right: true,
-    // picture: require('../../assets/images/4.png'),
+    picture: require('../../assets/images/4.png'),
   },
 ];
 
@@ -93,8 +104,8 @@ const Onboarding = () => {
           scrollEventThrottle={1}
           {...{ onScroll }}
         >
-          {slides.map(({ title }, index) => (
-            <Slide key={index} right={!!(index % 2)} {...{ title }} />
+          {slides.map(({ title, picture }, index) => (
+            <Slide key={index} right={!!(index % 2)} {...{ title }} picture={picture} />
           ))}
         </Animated.ScrollView>
       </Animated.View>
@@ -102,31 +113,37 @@ const Onboarding = () => {
         <Animated.View
           style={{ ...StyleSheet.absoluteFillObject, backgroundColor }}
         />
-        <Animated.View
-          style={[
-            styles.footerContent,
-            {
-              width: width * slides.length,
+
+        <View style={styles.footerContent}>
+          <View style={styles.pagination}>
+            {slides.map((_, index) => (
+              <Dot key={index} currentIndex={divide(x, width)} {...{ index }} />
+            ))}
+          </View>
+          <Animated.View
+            style={{
               flex: 1,
+              flexDirection: "row",
+              width: width * slides.length,
               transform: [{ translateX: multiply(x, -1) }],
-            },
-          ]}
-        >
-          {slides.map(({ subtitle, description }, index) => (
-            <Subslide
-              key={index}
-              last={index === slides.length - 1}
-              onPress={() => {
-                if (scroll.current) {
-                  scroll.current
-                    .getNode()
-                    .scrollTo({ x: width * (index + 1), animated: true });
-                }
-              }}
-              {...{ subtitle, description }}
-            />
-          ))}
-        </Animated.View>
+            }}
+          >
+            {slides.map(({ subtitle, description }, index) => (
+              <Subslide
+                key={index}
+                last={index === slides.length - 1}
+                onPress={() => {
+                  if (scroll.current) {
+                    scroll.current
+                      .getNode()
+                      .scrollTo({ x: width * (index + 1), animated: true });
+                  }
+                }}
+                {...{ subtitle, description }}
+              />
+            ))}
+          </Animated.View>
+        </View>
       </View>
     </View>
   );

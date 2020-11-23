@@ -1,24 +1,30 @@
 import React from "react";
-import { Text, StyleSheet } from "react-native";
-import { RectButton } from "react-native-gesture-handler";
+import { StyleSheet } from "react-native";
+import { RectButton, RectButtonProperties } from "react-native-gesture-handler";
+
+import { Text, useTheme } from "../compnents";
 
 interface ButtonProps {
   variant: "default" | "primary";
-  label: string;
+  label?: string;
   onPress: () => void;
+  style?: RectButtonProperties["style"];
 }
 
-const Button = ({ label, variant, onPress }: ButtonProps) => {
+const Button = ({ label, variant, style, onPress }: ButtonProps) => {
+  const theme = useTheme();
   const backgroundColor =
-    variant === "primary" ? "#2CB980" : "rgba(12, 13, 52, 0.05)";
-  const color = variant === "primary" ? "white" : "#0C0D34";
+    variant === "primary" ? theme.colors.primary : theme.colors.background2;
+  const color = variant === "primary" ? theme.colors.background : theme.colors.secondary;
 
   return (
     <RectButton
-      style={[styles.container, { backgroundColor }]}
-      onPress={onPress}
+      style={[styles.container, style, { backgroundColor }]}
+      {...{ onPress }}
     >
-      <Text style={[styles.label, { color }]}>{label}</Text>
+      <Text variant="button" style={{ color }}>
+        {label}
+      </Text>
     </RectButton>
   );
 };
@@ -34,7 +40,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   label: {
-    fontFamily: "Roboto-Medium",
+    fontFamily: "SFProDisplay-Medium",
     fontSize: 15,
     textAlign: "center",
   },

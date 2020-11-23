@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Text, Dimensions, StyleSheet } from "react-native";
+import { View, Dimensions, StyleSheet } from "react-native";
 import Animated from "react-native-reanimated";
 
-import Button from "../../compnents/Button";
+import { Button, Text } from "../../compnents";
 
 const { width, height } = Dimensions.get("window");
 export const SLIDE_HEIGHT = 0.71 * height;
@@ -17,8 +17,10 @@ interface SubslideProps {
 const Slide = ({ subtitle, description, last, onPress }: SubslideProps) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.subtitle}>{subtitle}</Text>
-      <Text style={styles.description}>{description}</Text>
+      <Text variant="title2" style={styles.subtitle}>{subtitle}</Text>
+      <Text variant="body" style={styles.description}>
+        {description}
+      </Text>
       <Button
         onPress={onPress}
         label={last ? "Let's get started" : "Next"}
@@ -36,20 +38,14 @@ const styles = StyleSheet.create({
     padding: 44,
   },
   subtitle: {
-    fontFamily: "Roboto-Medium",
-    fontSize: 24,
-    color: "#0C0D34",
-    lineHeight: 30,
     textAlign: "center",
+    marginTop: 12,
   },
   description: {
-    fontFamily: "Roboto-Regular",
-    fontSize: 16,
-    marginBottom: 30,
+    marginBottom: 40,
     lineHeight: 24,
-    color: "#0C0D34",
+
     textAlign: "center",
-    marginTop: 40,
   },
 });
 
