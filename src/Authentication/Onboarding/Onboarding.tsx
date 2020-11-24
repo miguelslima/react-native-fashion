@@ -1,8 +1,16 @@
 import React, { useRef } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Image,
+  ImageRequireSource,
+} from "react-native";
 import { onScrollEvent } from "../../utils/onScrollEvents";
 import Animated, {
   divide,
+  Extrapolate,
+  interpolate,
   interpolateColors,
   multiply,
 } from "react-native-reanimated";
@@ -11,20 +19,20 @@ import { interpolateColor } from "react-native-redash";
 
 import Slide, { SLIDE_HEIGHT } from "./Slide";
 import Subslide from "./Subslide";
-import Dot from "../../compnents/Dot";
+import Dot from "../../components/Dot";
+
+import { makeStyles, Theme } from "../../components/Themes";
 
 const { width, height } = Dimensions.get("window");
 
-const BORDER_RADIUS = 75;
-
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme: Theme) => ({
   container: {
     flex: 1,
     backgroundColor: "white",
   },
   slider: {
     height: SLIDE_HEIGHT,
-    borderBottomRightRadius: BORDER_RADIUS,
+    borderBottomRightRadius: theme.borderRadii.xl,
   },
   footer: {
     flex: 1,
@@ -32,17 +40,22 @@ const styles = StyleSheet.create({
   footerContent: {
     flex: 1,
     backgroundColor: "white",
-    borderTopLeftRadius: BORDER_RADIUS,
+    borderTopLeftRadius: theme.borderRadii.xl,
   },
   pagination: {
     ...StyleSheet.absoluteFillObject,
-    height: BORDER_RADIUS,
+    height: theme.borderRadii.xl,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
   },
-});
-
+  underlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "flex-end",
+    borderBottomRightRadius: theme.borderRadii.xl,
+    overflow: "hidden",
+  },
+}));
 const slides = [
   {
     title: "Relaxed",
@@ -51,7 +64,11 @@ const slides = [
       "Confused about your outfits? Don't worry! Find the best of them",
     color: "#BFEAF5",
     right: false,
-    picture: require('../../assets/images/1.png'),
+    picture: {
+      src: require("../../assets/images/1.png"),
+      width: 2513,
+      height: 3583,
+    },
   },
   {
     title: "Playful",
@@ -60,7 +77,11 @@ const slides = [
       "Hating the clothes in your wardrobe? Explore hundreds of outfits ideas",
     color: "#BEECC4",
     right: true,
-    picture: require('../../assets/images/2.png'),
+    picture: {
+      src: require("../../assets/images/2.png"),
+      width: 2791,
+      height: 3744,
+    },
   },
   {
     title: "Excentric",
@@ -69,7 +90,11 @@ const slides = [
       "Create your individual & unique style and look amazing everyday",
     color: "#FFE4D9",
     right: false,
-    picture: require('../../assets/images/3.png'),
+    picture: {
+      src: require("../../assets/images/3.png"),
+      width: 1757,
+      height: 2551,
+    },
   },
   {
     title: "Funky",
@@ -78,11 +103,16 @@ const slides = [
       "Discover the latest trends in fashion and explore your personality",
     color: "#FFDDDD",
     right: true,
-    picture: require('../../assets/images/4.png'),
+    picture: {
+      src: require("../../assets/images/4.png"),
+      width: 2513,
+      height: 3583,
+    },
   },
 ];
 
 const Onboarding = () => {
+  const styles = useStyles();
   const scroll = useRef<Animated.ScrollView>(null);
   const x = useValue(0);
   const onScroll = onScrollEvent({ x });
@@ -94,6 +124,29 @@ const Onboarding = () => {
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.slider, { backgroundColor }]}>
+        {slides.map(({ picture }, index) => {
+          const opacity = interpolate(x, {
+            inputRange: [
+              (index - 0.5) * width,
+              index * width,
+              (index + 0.5) * width,
+            ],
+            outputRange: [0, 1, 0],
+            extrapolate: Extrapolate.CLAMP,
+          });
+
+          return (
+            <Animated.View style={[styles.underlay, { opacity }]} key={index}>
+              <Image
+                source={picture.src}
+                style={{
+                  width: width - 75,
+                  height: ((width - 75) * picture.height) / picture.width,
+                }}
+              />
+            </Animated.View>
+          );
+        })}
         <Animated.ScrollView
           ref={scroll}
           horizontal
@@ -105,7 +158,12 @@ const Onboarding = () => {
           {...{ onScroll }}
         >
           {slides.map(({ title, picture }, index) => (
-            <Slide key={index} right={!!(index % 2)} {...{ title }} picture={picture} />
+            <Slide
+              key={index}
+              right={!!(index % 2)}
+              {...{ title }}
+              // picture={picture}
+            />
           ))}
         </Animated.ScrollView>
       </Animated.View>

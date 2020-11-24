@@ -2,7 +2,7 @@ import React from "react";
 import { View, Dimensions, StyleSheet } from "react-native";
 import Animated from "react-native-reanimated";
 
-import { Button, Text } from "../../compnents";
+import { Button, Text } from "../../components";
 
 const { width, height } = Dimensions.get("window");
 export const SLIDE_HEIGHT = 0.71 * height;
@@ -14,10 +14,12 @@ interface SubslideProps {
   onPress: () => void;
 }
 
-const Slide = ({ subtitle, description, last, onPress }: SubslideProps) => {
+const Sublide = ({ subtitle, description, last, onPress }: SubslideProps) => {
   return (
     <View style={styles.container}>
-      <Text variant="title2" style={styles.subtitle}>{subtitle}</Text>
+      <Text variant="title2" style={styles.subtitle}>
+        {subtitle}
+      </Text>
       <Text variant="body" style={styles.description}>
         {description}
       </Text>
@@ -49,4 +51,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Slide;
+export default Sublide;

@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { RectButton, RectButtonProperties } from "react-native-gesture-handler";
 
-import { Text, useTheme } from "../compnents";
+import { Text, useTheme } from "../components";
 
 interface ButtonProps {
   variant: "default" | "primary";
@@ -15,7 +15,8 @@ const Button = ({ label, variant, style, onPress }: ButtonProps) => {
   const theme = useTheme();
   const backgroundColor =
     variant === "primary" ? theme.colors.primary : theme.colors.background2;
-  const color = variant === "primary" ? theme.colors.background : theme.colors.secondary;
+  const color =
+    variant === "primary" ? theme.colors.background : theme.colors.secondary;
 
   return (
     <RectButton
@@ -38,11 +39,6 @@ const styles = StyleSheet.create({
     width: 245,
     justifyContent: "center",
     alignItems: "center",
-  },
-  label: {
-    fontFamily: "SFProDisplay-Medium",
-    fontSize: 15,
-    textAlign: "center",
   },
 });
 
