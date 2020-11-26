@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { LoadAssets } from "./src/components";
 import { ThemeProvider } from "./src/components/Themes";
 import { Onboarding, Welcome } from "./src/Authentication";
+import { Routes } from "./src/components/Navigation";
 
 const fonts = {
   "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
@@ -14,7 +15,7 @@ const fonts = {
   "SFProDisplay-Regular": require("./assets/fonts/SF-Pro-Display-Regular.otf"),
 };
 
-const AuthenticationStack = createStackNavigator();
+const AuthenticationStack = createStackNavigator<Routes>();
 const AuthenticationNavigation = () => {
   return (
     <AuthenticationStack.Navigator headerMode="none">

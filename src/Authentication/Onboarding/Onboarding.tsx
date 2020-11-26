@@ -23,6 +23,8 @@ import Dot from "../../components/Dot";
 
 import { makeStyles, Theme } from "../../components/Themes";
 
+import { Routes, StackNavigationProps } from "../../components/Navigation";
+
 const { width, height } = Dimensions.get("window");
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -56,6 +58,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflow: "hidden",
   },
 }));
+
 const slides = [
   {
     title: "Relaxed",
@@ -111,7 +114,9 @@ const slides = [
   },
 ];
 
-const Onboarding = () => {
+const Onboarding = ({
+  navigation,
+}: StackNavigationProps<Routes, "Onboarding">) => {
   const styles = useStyles();
   const scroll = useRef<Animated.ScrollView>(null);
   const x = useValue(0);
@@ -186,20 +191,25 @@ const Onboarding = () => {
               transform: [{ translateX: multiply(x, -1) }],
             }}
           >
-            {slides.map(({ subtitle, description }, index) => (
-              <Subslide
-                key={index}
-                last={index === slides.length - 1}
-                onPress={() => {
-                  if (scroll.current) {
-                    scroll.current
-                      .getNode()
-                      .scrollTo({ x: width * (index + 1), animated: true });
-                  }
-                }}
-                {...{ subtitle, description }}
-              />
-            ))}
+            {slides.map(({ subtitle, description }, index) => {
+              const last = index === slides.length - 1;
+
+              return (
+                <Subslide
+                  key={index}
+                  onPress={() => {
+                    if (last) {
+                      navigation.navigate("Welcome");
+                    } else {
+                      scroll.current
+                        ?.getNode()
+                        .scrollTo({ x: width * (index + 1), animated: true });
+                    }
+                  }}
+                  {...{ subtitle, description, last }}
+                />
+              );
+            })}
           </Animated.View>
         </View>
       </View>
