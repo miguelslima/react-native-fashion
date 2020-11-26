@@ -2,8 +2,14 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { LoadAssets } from "./src/components";
 import { ThemeProvider } from "./src/components/Themes";
-import { Onboarding, Welcome } from "./src/Authentication";
+import {
+  Onboarding,
+  Welcome,
+  assets as authenticationAssets,
+} from "./src/Authentication";
 import { Routes } from "./src/components/Navigation";
+
+const assets = [...authenticationAssets];
 
 const fonts = {
   "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
@@ -28,7 +34,7 @@ const AuthenticationNavigation = () => {
 export default function App() {
   return (
     <ThemeProvider>
-      <LoadAssets {...{ fonts }}>
+      <LoadAssets {...{ fonts, assets }}>
         <AuthenticationNavigation />
       </LoadAssets>
     </ThemeProvider>
