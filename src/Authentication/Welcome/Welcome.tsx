@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, useTheme, Text, Button } from "../../components";
 import { Image, Dimensions } from "react-native";
+import { Routes, StackNavigationProps } from "../../components/Navigation";
 // import { AuthNavigationProps } from "../../components/Navigation";
 
 const { width } = Dimensions.get("window");
@@ -12,7 +13,8 @@ const picture = {
 };
 
 export const assets = [picture.src];
-const Welcome = () => {
+
+const Welcome = ({ navigation }: StackNavigationProps<Routes, "Welcome">) => {
   const theme = useTheme();
   const BORDER_RADIUS = theme.borderRadii.xl;
 
@@ -61,8 +63,16 @@ const Welcome = () => {
             label="Have an account? Login"
             onPress={() => navigation.navigate("Login")}
           />
-          <Button variant="default" label="Join us it's free" />
-          <Button variant="transparent" label="Forgot password?" />
+          <Button
+            variant="default"
+            label="Join us it's free"
+            onPress={() => {}}
+          />
+          <Button
+            variant="transparent"
+            label="Forgot password?"
+            onPress={() => {}}
+          />
           {/*
           <LinkButton
             onPress={() => navigation.navigate('ForgotPassword')}
