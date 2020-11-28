@@ -2,12 +2,16 @@ import React from "react";
 import { View } from "react-native";
 import { Routes, StackNavigationProps } from "../../components/Navigation";
 
+import { Container } from "../../components";
+
 interface LoginProps {}
 
-const Login = ({
-  navigation,
-}: StackNavigationProps<Routes, "Login">) => {
-  return <View />;
+const Login = () => {
+  return (
+    <Container>
+      <View></View>
+    </Container>
+  );
 };
 
 export default Login;
